@@ -17,7 +17,7 @@ class ApiService {
         var jsonResponse = json.decode(response.body);
         Events events = Events.fromJson(jsonResponse);
         log(events.toString());
-        return true;
+        return events;
       }
 
       return "Something went wrong. Please try again later";

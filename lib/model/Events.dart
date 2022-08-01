@@ -4,6 +4,13 @@ class Events {
   List<Allevents>? allevents;
   List<Allevents>? liveevents;
 
+  factory Events.initial() => Events(
+        status: "",
+        message: "",
+        allevents: [],
+        liveevents: [],
+      );
+
   Events({this.status, this.message, this.allevents, this.liveevents});
 
   Events.fromJson(Map<String, dynamic> json) {

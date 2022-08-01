@@ -1,6 +1,8 @@
-import 'package:event_org/view/event_details.dart';
+import 'package:event_org/controller/get_events_cubit.dart';
+import 'package:event_org/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'utility/coustom_routes.dart';
 
 void main() async {
@@ -18,10 +20,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: EventDetails.routeName,
-      onGenerateRoute: CustomRoutes.generateRoute,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<EventCubit>(
+          create: (BuildContext context) => EventCubit(),
+        ),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: Home.routeName,
+        onGenerateRoute: CustomRoutes.generateRoute,
+      ),
     );
   }
 }
