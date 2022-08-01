@@ -33,12 +33,13 @@ myText(String content,
     int maxLine = 3,
     Color? color = Colors.white,
     FontWeight fontWeight = FontWeight.normal}) {
-  return Text(
-    content,
-    overflow: TextOverflow.fade,
-    maxLines: maxLine,
-    //maxLines: 3,
-    style: GoogleFonts.getFont(fontfamily,
-        fontSize: size, color: color, fontWeight: fontWeight),
+  return Flexible(
+    child: Text(
+      content,
+      overflow: TextOverflow.ellipsis,
+      maxLines: maxLine,
+      style: GoogleFonts.getFont(fontfamily,
+          fontSize: size, color: color, fontWeight: fontWeight),
+    ),
   );
 }

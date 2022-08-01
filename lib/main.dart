@@ -1,4 +1,4 @@
-import 'package:event_org/view/home.dart';
+import 'package:event_org/view/event_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'utility/coustom_routes.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Home.routeName,
+      initialRoute: EventDetails.routeName,
       onGenerateRoute: CustomRoutes.generateRoute,
     );
   }
