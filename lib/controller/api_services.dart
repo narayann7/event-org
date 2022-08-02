@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:event_org/model/Events.dart';
 import 'package:http/http.dart' as http;
 

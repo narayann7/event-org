@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:event_org/controller/get_events_cubit.dart';
 import 'package:event_org/model/event_state.dart';
@@ -26,8 +24,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int index = 0;
-
   @override
   void initState() {
     context.read<EventCubit>().getEvents();
@@ -42,6 +38,16 @@ class _HomeState extends State<Home> {
         return Scaffold(
             appBar: AppBar(
               title: myText("Home"),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Icon(Icons.notifications),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Icon(Icons.menu),
+                ),
+              ],
               elevation: 0,
               backgroundColor: Colors.green[400],
               leadingWidth: 12,
@@ -82,51 +88,59 @@ class _HomeState extends State<Home> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  type1(context),
+                                  LiveEventCard(
+                                    context,
+                                    state.events.liveevents![1],
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 22, bottom: 20),
-                                    child: myText("Upcoming Events",
+                                    child: myText("All Events",
                                         color: Colors.white, size: 25),
                                   ),
-                                  Column(children: [
-                                    CarouselSlider.builder(
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.26,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: CarouselSlider.builder(
                                         options: CarouselOptions(
                                           height: 200,
                                           aspectRatio: 2.0,
                                           viewportFraction: 0.8,
-                                          onPageChanged: (ind, reson) {
-                                            setState(() {
-                                              index = ind;
-                                            });
-                                          },
+                                          onPageChanged: (ind, reson) {},
                                           initialPage: 0,
                                           enableInfiniteScroll: true,
                                           enlargeCenterPage: true,
                                           scrollDirection: Axis.horizontal,
                                         ),
-                                        itemCount: 15,
+                                        itemCount:
+                                            state.events.allevents!.length,
                                         itemBuilder: (BuildContext context,
                                                 int itemIndex,
                                                 int pageViewIndex) =>
-                                            type2(context)),
+                                            AllEventCard(
+                                                context,
+                                                state.events
+                                                    .allevents![itemIndex])),
+                                  ),
+                                  Column(children: [
                                     Container(
                                       alignment: Alignment.center,
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.27 *
-                                              state.events.allevents!.length,
+                                              0.35 *
+                                              state.events.liveevents!.length,
                                       width: MediaQuery.of(context).size.width,
                                       child: ListView.builder(
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           itemCount:
-                                              state.events.allevents!.length,
+                                              state.events.liveevents!.length,
                                           itemBuilder: (context, index) {
-                                            log(state.events.allevents!.length
-                                                .toString());
-                                            return type1(
+                                            return LiveEventCard(
                                               context,
+                                              state.events.liveevents![index],
                                             );
                                           }),
                                     )
@@ -141,83 +155,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget type2(BuildContext context) {
-  return Container(
-      height: MediaQuery.of(context).size.height * 0.25,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          color: Colors.blueGrey, borderRadius: BorderRadius.circular(13)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            myText(
-                size: 25,
-                "hello world heudvdvud diuvbvbf dufgduksjvbdfsk dfjdskbjvfd",
-                color: black),
-            myButton(context,
-                title: "Book now",
-                tsize: 20,
-                buttonColor: Colors.yellow,
-                textColor: Colors.black,
-                height: 35,
-                width: 110)
-          ],
-        ),
-      ));
-}
 
-Widget type1(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Container(
-        height: MediaQuery.of(context).size.height * 0.25,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: Colors.amber, borderRadius: BorderRadius.circular(13)),
-        child: Row(
-          children: [
-            GestureDetector(
-              child: Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(13),
-                        bottomLeft: Radius.circular(13)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        myText("hello world ",
-                            size: 30,
-                            fontWeight: FontWeight.w600,
-                            color: black),
-                        myText("18-98-2022 | hello",
-                            color: Colors.grey[700], size: 18),
-                        myText(
-                            "hello world heuvud diuvbvbf dufgduksjvbdfsk dfjdskbjvfd",
-                            color: black),
-                        myButton(context,
-                            title: "join now",
-                            tsize: 20,
-                            buttonColor: Colors.green,
-                            height: 35,
-                            width: 110)
-                      ],
-                    ),
-                  )),
-            )
-          ],
-        )),
-  );
-}
 
 
 
