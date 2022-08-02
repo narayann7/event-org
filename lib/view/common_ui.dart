@@ -207,3 +207,26 @@ mainInit() {
     DeviceOrientation.portraitDown,
   ]);
 }
+
+setIconWithName(
+  BuildContext context,
+  IconData icon,
+  String name,
+) {
+  return SizedBox(
+    width: MediaQuery.of(context).size.width * 0.25,
+    child: Column(
+      children: [
+        Icon(
+          icon,
+          size: 30,
+          color: Colors.grey[700],
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        myText(name, size: 20, color: Colors.grey[700])
+      ],
+    ),
+  );
+}
