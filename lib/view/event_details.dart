@@ -1,20 +1,28 @@
+import 'package:flutter/material.dart';
+
+import 'package:event_org/model/Events.dart';
 import 'package:event_org/utility/common_function.dart';
 import 'package:event_org/utility/constants.dart';
 import 'package:event_org/view/common_ui.dart';
-import 'package:flutter/material.dart';
 
 class EventDetails extends StatelessWidget {
-  const EventDetails({Key? key}) : super(key: key);
+  const EventDetails({
+    Key? key,
+    required this.allevents,
+  }) : super(key: key);
   static const String routeName = '/EventDetails';
 
-  static getNavigator() {
+  static getNavigator(Allevents allevents) {
     return MaterialPageRoute(
         settings: const RouteSettings(name: "/EventDetails"),
         builder: (c) {
-          return const EventDetails();
+          return EventDetails(
+            allevents: allevents,
+          );
         });
   }
 
+  final Allevents allevents;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,32 +47,79 @@ class EventDetails extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            Container(
-              alignment: Alignment.center,
-              height: MediaQuery.of(context).size.height * 0.25,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Colors.amber[100]),
+            Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                  child: myCachedNetworkImage(
+                      allevents.eventBannerImg1 as String, 0),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        myText(allevents.eventName.toString(),
+                            maxLine: 2,
+                            size: 25,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        myText(
+                            maxLine: 20,
+                            size: 25,
+                            allevents.eventLocation.toString(),
+                            color: Colors.white),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.13,
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        myText("hello world ",
-                            size: 30,
-                            fontWeight: FontWeight.w500,
-                            color: black),
-                        myText("18-98-2022 | hello",
-                            color: Colors.grey[700], size: 18),
-                      ],
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          myText(allevents.eventName.toString(),
+                              size: 30,
+                              fontWeight: FontWeight.w500,
+                              color: black),
+                          myText(
+                              "${allevents.eventStarttime} | ${allevents.eventStartdate}",
+                              color: Colors.grey[700],
+                              size: 18),
+                        ],
+                      ),
                     ),
                     Row(
                       children: const [
@@ -86,14 +141,17 @@ class EventDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: MediaQuery.of(context).size.width,
-                child: myText(
-                    maxLine: 10,
-                    "helldvjv dusvuhv dihvdis v dihvusv dsvid jdivhdsivhds vidshvis v  divhidos vdsvdsij dsivhdsi vdhsivhdsv dishvisvhodihvi isdhvid svhih isdhv isho world ",
-                    size: 25,
-                    color: black),
-              ),
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    child: myText(
+                        maxLine: 100,
+                        allevents.eventDescription.toString(),
+                        size: 18,
+                        color: black),
+                  )),
             )
           ],
         )),

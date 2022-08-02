@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:event_org/model/Events.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +14,6 @@ class ApiService {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         Events events = Events.fromJson(jsonResponse);
-        log(events.toString());
         return events;
       }
 

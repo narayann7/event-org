@@ -2,27 +2,39 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_org/model/Events.dart';
 import 'package:event_org/utility/common_function.dart';
 import 'package:event_org/utility/constants.dart';
+import 'package:event_org/view/event_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-myButton(
-  BuildContext context, {
-  String? title,
-  Color? buttonColor,
-  Function? function,
-  double height = 20,
-  double width = 20,
-  double tsize = 60,
-  Color? textColor,
-}) {
-  textColor = textColor ?? Colors.white;
-  return Container(
-    height: height,
-    width: width,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12), color: buttonColor),
-    child: Center(
-      child: myText(title.toString(), color: textColor, size: tsize),
-    ),
+Future<void> showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              myText('Do you want to exit the app', color: Colors.black),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: myText('Yes', color: Colors.black),
+            onPressed: () async {
+              SystemNavigator.pop();
+            },
+          ),
+          TextButton(
+            child: myText('No', color: Colors.black),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
   );
 }
 
@@ -52,13 +64,19 @@ Widget AllEventCard(BuildContext context, Allevents allevents) {
                   size: 25,
                   allevents.eventDescription.toString(),
                   color: Colors.white),
-              myButton(context,
-                  title: "Book now",
-                  tsize: 20,
-                  buttonColor: Colors.yellow,
-                  textColor: Colors.black,
-                  height: 35,
-                  width: 110)
+              GestureDetector(
+                onTap: () {
+                  teleportWithArguments(
+                      context, EventDetails.routeName, allevents);
+                },
+                child: myButton(context,
+                    title: "Book now",
+                    tsize: 20,
+                    buttonColor: Colors.yellow,
+                    textColor: Colors.black,
+                    height: 35,
+                    width: 110),
+              )
             ],
           ),
         ),
@@ -112,12 +130,17 @@ Widget LiveEventCard(BuildContext context, Allevents allevents) {
                         color: black,
                         size: 18,
                       ),
-                      myButton(context,
-                          title: "join now",
-                          tsize: 20,
-                          buttonColor: Colors.green,
-                          height: 35,
-                          width: 110)
+                      GestureDetector(
+                          onTap: () {
+                            teleportWithArguments(
+                                context, EventDetails.routeName, allevents);
+                          },
+                          child: myButton(context,
+                              title: "join now",
+                              tsize: 20,
+                              buttonColor: Colors.green,
+                              height: 35,
+                              width: 110))
                     ],
                   ),
                 )),
@@ -154,4 +177,33 @@ myCachedNetworkImage(String url, int type) {
         );
       },
       placeholder: (context, url) => circularProgress());
+}
+
+myButton(
+  BuildContext context, {
+  String? title,
+  Color? buttonColor,
+  double height = 20,
+  double width = 20,
+  double tsize = 60,
+  Color? textColor,
+}) {
+  textColor = textColor ?? Colors.white;
+  return Container(
+    height: height,
+    width: width,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12), color: buttonColor),
+    child: Center(
+      child: myText(title.toString(), color: textColor, size: tsize),
+    ),
+  );
+}
+
+mainInit() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }

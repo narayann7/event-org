@@ -1,17 +1,12 @@
 import 'package:event_org/controller/get_events_cubit.dart';
+import 'package:event_org/view/common_ui.dart';
 import 'package:event_org/view/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'utility/coustom_routes.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  mainInit();
   runApp(const MyApp());
 }
 
